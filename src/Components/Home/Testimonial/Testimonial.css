@@ -1,0 +1,9 @@
+.testimonial-bg .container{
+    background-image: url(../../../images/quote.png);
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: 150px;
+}
+.testimonial-bg{
+    border-color: transparent;
+}
