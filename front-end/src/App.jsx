@@ -4,17 +4,21 @@ import Home from "./pages/Home/Home";
 import About from "./pages//About/About.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Navbar from "./pages/Shared/Navbar";
+import Footer from "./pages/Shared/Footer.jsx";
+import Appointment from "./pages/Appointment/Appointment.jsx";
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <div className="pages">
+        <div className="max-w-7xl mx-auto">
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/Login" element={<Login />} />
+            <Route path="/appointment" element={<Appointment />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
+          <Footer />
         </div>
       </BrowserRouter>
     </div>
