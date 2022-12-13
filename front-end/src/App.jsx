@@ -6,6 +6,7 @@ import Login from "./pages/Login/Login.jsx";
 import Navbar from "./pages/Shared/Navbar";
 import Footer from "./pages/Shared/Footer.jsx";
 import Appointment from "./pages/Appointment/Appointment.jsx";
+import Register from "./pages/Login/Register";
 function App() {
   return (
     <div>
@@ -17,6 +18,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/appointment" element={<Appointment />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
         </div>

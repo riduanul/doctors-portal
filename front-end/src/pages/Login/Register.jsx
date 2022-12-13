@@ -1,44 +1,75 @@
 import React, { useState } from "react";
-import { signInWithGoogle } from "../../firebase.config";
-import googleIcon from "../../../assets/icons/google.png";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.config";
-import { useNavigate } from "react-router-dom";
-const Login = () => {
+
+const Register = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+
   const {
     register,
     handleSubmit,
+
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const signup = async (data) => {
     const { email, password } = data;
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       const user = userCredential.user;
       setLoading(false);
-      navigate("/");
+
+      console.log(user);
     } catch (error) {
       setError(error);
-      console.log(error.message);
     }
   };
+
   return (
     <div className="flex justify-center items-center h-screen ">
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body text-center space-y-8 border border-primary px-20">
-          <h2 className="text-2xl font-bold text-primary">Login</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          <h2 className="text-2xl font-bold text-primary">Register</h2>
+          <form onSubmit={handleSubmit(signup)} className="w-full">
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">User Name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="User Name"
+                className="input input-bordered w-full max-w-xs"
+                {...register("name", {
+                  required: { value: true, message: "User Name is required!" },
+                  minLength: {
+                    value: 4,
+                    message: "must be 4 charecters or more!",
+                  },
+                })}
+              />
+              <label className="label">
+                <span className="label-text-alt">
+                  {errors.name?.type === "required" && (
+                    <p role="alert" className="text-red-500">
+                      {errors.name?.message}
+                    </p>
+                  )}
+                  {errors.name?.type === "minLength" && (
+                    <p role="alert" className="text-red-500">
+                      {errors.anme?.message}
+                    </p>
+                  )}
+                </span>
+              </label>
+            </div>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -63,9 +94,7 @@ const Login = () => {
                     </p>
                   )}
                   {errors.email?.type === "pattern" && (
-                    <p role="alert" className="text-red-500">
-                      {errors.email?.message}
-                    </p>
+                    <p role="alert" className="text-red-500"></p>
                   )}
                 </span>
               </label>
@@ -106,32 +135,19 @@ const Login = () => {
             <input
               className="btn btn-outline border border-primary  w-full max-w-xs hover:bg-primary hover:border-none"
               type="submit"
-              value="Login"
             />
             <div className=" mt-2">
-              <span className="text-red-500 mr-2"> New ? </span>
-              <Link to="/register" className="text-green-500 font-bold">
-                Register
+              <span className="text-red-500 mr-2"> Already Registerd ? </span>
+              <Link to="/login" className="text-green-500 font-bold">
+                Login
               </Link>
             </div>
-            {error && (
-              <p className="text-red-500 text-center">{error.message}</p>
-            )}
+            {error && <p className="text-red-500">{error.message}</p>}
           </form>
-          <div className="divider">OR</div>
-          <button
-            className="btn btn-outline hover:border-none hover:bg-primary border-primary "
-            onClick={signInWithGoogle}
-          >
-            <span className="mr-2 ">
-              <img src={googleIcon} alt="" width={25} />
-            </span>
-            Continue with Google
-          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
