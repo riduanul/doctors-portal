@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const workoutRoutes = require("./routes/workeoutRoutes");
+const servicesRoutes = require("./routes/servicesRoutes");
 const database = require("./database");
 const cors = require("cors");
 //express app
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/api/workouts", workoutRoutes);
+app.use("/api/services", servicesRoutes);
 
 // listen for requests
 app.listen(process.env.PORT, () => {
