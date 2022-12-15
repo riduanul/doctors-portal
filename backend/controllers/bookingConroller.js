@@ -2,7 +2,7 @@ const Booking = require("../models/bookingModel");
 const mongoose = require("mongoose");
 
 //Get All Bookings
-export const getBookings = async (req, res) => {
+const getBookings = async (req, res) => {
   const bookings = await Booking.find({});
   res.status(200).json({
     bookings,
@@ -11,7 +11,7 @@ export const getBookings = async (req, res) => {
 
 //Get A single Booking
 
-export const getBooking = async (req, res) => {
+const getBooking = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({
@@ -32,7 +32,7 @@ export const getBooking = async (req, res) => {
 };
 
 // Create a New Booking
-export const createBooking = async (req, res) => {
+const createBooking = async (req, res) => {
   const { booking } = req.body;
 
   // add booking to database
@@ -50,7 +50,7 @@ export const createBooking = async (req, res) => {
 
 // Delate a Booking
 
-export const deleteBooking = async (req, res) => {
+const deleteBooking = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({
@@ -72,7 +72,7 @@ export const deleteBooking = async (req, res) => {
 
 // Update a Booking
 
-export const updateBooking = async (req, res) => {
+const updateBooking = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveUser,
   setUserLogOutState,
-} from "../../features/api/userSlice";
+} from "../../features/services/userSlice";
 import Loading from "../shared/Loading.jsx";
 
 const Login = () => {

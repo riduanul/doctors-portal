@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import logo from "../../../assets/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserLogOutState } from "../../features/api/userSlice";
+import { setUserLogOutState } from "../../features/services/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -38,7 +38,7 @@ const Navbar = () => {
       </li>
 
       <li
-        className=" hover:bg-secondary hover:rounded tooltip tooltip-open tooltip-right tooltip-info"
+        className=" hover:bg-secondary hover:rounded tooltip tooltip-open tooltip-bottom tooltip-info"
         data-tip={userName ? `${userName} ` : "user"}
       >
         {!email ? (

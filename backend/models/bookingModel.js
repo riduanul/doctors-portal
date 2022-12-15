@@ -13,7 +13,7 @@ const bookingSchema = new Schema({
   date: {
     type: Date,
     required: true,
-    default: new Date.now(),
+    default: Date.now(),
   },
   slot: {
     type: String,
@@ -30,9 +30,6 @@ const bookingSchema = new Schema({
   phoneNumber: {
     type: Number,
     required: true,
-  },
-  createdAt: {
-    default: new Date.now(),
   },
 });
 
