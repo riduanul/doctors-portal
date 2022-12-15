@@ -7,7 +7,17 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
   const handleBooking = (event) => {
     event.preventDefault();
     const slot = event.target.slot.value;
+    const formatedDate = format(date, "PP");
     console.log(_id, name, slot);
+    const booking = {
+      treatmenId: _id,
+      treatmentType: name,
+      date: formatedDate,
+      slot,
+      patientEmail: email,
+      patientName: userName,
+      phoneNumber: event.target.phone.value,
+    };
     setTreatment(null);
   };
   return (

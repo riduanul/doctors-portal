@@ -9,19 +9,19 @@ const {
 
 const router = express.Router();
 
-// Get all workouts
+// Get all Services
 router.get("/", getServices);
 
-// Get a single workout
+// Get a single service
 router.get("/:id", getService);
 
-// Post a new workout
+// Post a new Service
 router.post("/", createService);
 
-// Delete a workout
+// Delete a Service
 router.delete("/:id", deleteService);
 
-// Update a workout
+// Update a Service
 router.patch("/:id", updateService);
 
 module.exports = router;

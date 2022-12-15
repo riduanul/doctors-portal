@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const servicesRoutes = require("./routes/servicesRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 const database = require("./database");
 const cors = require("cors");
 //express app
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 
 // routes
 app.use("/api/services", servicesRoutes);
+app.use("/api/booking", bookingRoutes);
 
 // listen for requests
 app.listen(process.env.PORT, () => {
