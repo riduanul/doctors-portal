@@ -1,8 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const BookingModal = ({ treatment, date, format, setTreatment }) => {
   const { _id, name, slots } = treatment;
-
+  const { email, userName } = useSelector((state) => state.user);
   const handleBooking = (event) => {
     event.preventDefault();
     const slot = event.target.slot.value;
@@ -36,8 +37,8 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
               name="slot"
               className="select select-bordered w-full max-w-xs"
             >
-              {slots.map((slot) => (
-                <option key={slot} value={slot}>
+              {slots.map((slot, index) => (
+                <option key={index} value={slot}>
                   {slot}
                 </option>
               ))}
@@ -45,13 +46,13 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
             <input
               type="text"
               name="name"
-              placeholder="Your Name"
+              value={userName ? ` ${userName}` : ""}
               className="input input-bordered w-full max-w-xs"
             />
             <input
               type="email"
               name="email"
-              placeholder="You Email"
+              value={email ? ` ${email}` : ""}
               className="input input-bordered w-full max-w-xs"
             />
             <input

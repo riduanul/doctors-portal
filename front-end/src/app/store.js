@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "../features/api/apiSlice";
-import workoutReducer from "../features/api/worukoutSlice";
+import userReducer from "../features/api/userSlice";
 
 const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
-    workout: workoutReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares().concat(apiSlice.middleware),

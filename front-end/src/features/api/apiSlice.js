@@ -1,21 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
-  reducerPath: "workoutsApi",
+  reducerPath: "servicesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/workouts",
+    baseUrl: "http://localhost:5000/api/services",
   }),
   tagTypes: ["Post"],
   endpoints: (builder) => ({
-    getWorkouts: builder.query({
+    getServices: builder.query({
       query: () => "/",
     }),
-    getWorkout: builder.query({
+    getService: builder.query({
       query: (id) => `/${id}`,
     }),
-    addWorkout: builder.mutation({
+    addService: builder.mutation({
       query: () => ({
-        url: "/post",
+        url: "/",
         method: "POST",
         body,
       }),
@@ -27,7 +27,8 @@ export const apiSlice = createApi({
 });
 
 export const {
-  useGetWorkoutsQuery,
-  useGetWorkoutQuery,
-  useDeleteWorkoutMutation,
+  useGetServicesQuery,
+  useGetServiceQuery,
+  useAddServiceMutation,
+  useDeleteServiceMutation,
 } = apiSlice;

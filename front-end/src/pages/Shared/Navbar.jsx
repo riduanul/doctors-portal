@@ -1,33 +1,58 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase.config";
+import logo from "../../../assets/images/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserLogOutState } from "../../features/api/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { email, userName } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => dispatch(setUserLogOutState()))
+      .catch((err) => console.log(err.message));
+    navigate("/");
+  };
+
   const menuItems = (
     <>
-      <li className="hover:bg-primary hover:rounded">
+      <li className="hover:bg-secondary hover:rounded">
         <Link to="/">Home</Link>
       </li>
-      <li className="hover:bg-primary hover:rounded">
+      <li className="hover:bg-secondary hover:rounded">
         <Link to="/appointment">Appointment</Link>
       </li>
-      <li className="hover:bg-primary hover:rounded">
+      <li className="hover:bg-secondary hover:rounded">
         <Link to="/review">Review</Link>
       </li>
-      <li className="hover:bg-primary hover:rounded">
+      <li className="hover:bg-secondary hover:rounded">
         <Link to="/contact">Contact</Link>
       </li>
-      <li className="hover:bg-primary hover:rounded">
+      <li className="hover:bg-secondary hover:rounded">
         <Link to="/about">About</Link>
       </li>
-      <li className="hover:bg-primary hover:rounded">
-        <Link to="/login">Login</Link>
+
+      <li
+        className=" hover:bg-secondary hover:rounded tooltip tooltip-open tooltip-right tooltip-info"
+        data-tip={userName ? `${userName} ` : "user"}
+      >
+        {!email ? (
+          <Link to="/login">Login</Link>
+        ) : (
+          <button onClick={handleSignOut}>Logout</button>
+        )}
       </li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100 max-w-full ">
-      <div className="navbar-start">
+    <div className="navbar bg-base-100 max-w-full fixed top-0 left-0 justify-center border-b border-b-slate-200 z-10 ">
+      <div className="navbar-start ">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
@@ -47,14 +72,20 @@ const Navbar = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52   lg:max-w-lg"
+            className="menu menu-compact dropdown-content   shadow bg-base-100 rounded-box w-52   lg:max-w-lg"
           >
             {menuItems}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl hover:bg-primary hover:rounded">
+        <Link
+          to="/"
+          className=" flex justify-center items-center font-bold normal-case text-xl  "
+        >
+          <span>
+            <img src={logo} alt="" width={80} />
+          </span>
           DoctosPortal
-        </a>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>

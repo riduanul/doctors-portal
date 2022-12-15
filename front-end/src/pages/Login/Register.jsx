@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -24,10 +26,19 @@ const Register = () => {
         email,
         password
       );
+      await updateProfile(auth.currentUser, {
+        displayName: data.name,
+      })
+        .then(() => {
+          console.log("profile Updated");
+        })
+        .catch((err) => console.log(err));
       const user = userCredential.user;
       setLoading(false);
-
-      console.log(user);
+      reset();
+      toast.success("Successfully Registerd!", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
     } catch (error) {
       setError(error);
     }
@@ -143,6 +154,9 @@ const Register = () => {
               </Link>
             </div>
             {error && <p className="text-red-500">{error.message}</p>}
+            <div>
+              <ToastContainer />
+            </div>
           </form>
         </div>
       </div>

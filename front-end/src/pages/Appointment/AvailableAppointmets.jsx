@@ -10,7 +10,6 @@ const AvailableAppointmets = ({ date, format }) => {
     fetch("http://localhost:5000/api/services")
       .then((res) => res.json())
       .then((data) => setServices(data));
-    console.log(services);
   }, []);
   return (
     <section className="pt-5">

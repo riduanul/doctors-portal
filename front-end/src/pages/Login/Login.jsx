@@ -1,21 +1,37 @@
 import React, { useState } from "react";
-import { signInWithGoogle } from "../../firebase.config";
 import googleIcon from "../../../assets/icons/google.png";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useLocation } from "react-router-dom";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setActiveUser,
+  setUserLogOutState,
+} from "../../features/api/userSlice";
+import Loading from "../shared/Loading.jsx";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const userName = useSelector((state) => state.user.userName);
+  const email = useSelector((state) => state.user.email);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  //userName and Email Signin
   const onSubmit = async (data) => {
     const { email, password } = data;
     setLoading(true);
@@ -26,15 +42,52 @@ const Login = () => {
         password
       );
       const user = userCredential.user;
+
+      dispatch(
+        setActiveUser({
+          userName: user.displayName,
+          email: user.email,
+        })
+      );
+
       setLoading(false);
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       setError(error);
       console.log(error.message);
     }
   };
+
+  //google Signin
+
+  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) =>
+        dispatch(
+          setActiveUser({
+            userName: result.user.displayName,
+            email: result.user.email,
+          })
+        )
+      )
+
+      .catch((err) => setError(err));
+    navigate("/");
+  };
+  let errorMessage;
+  if (loading) {
+    return <Loading />;
+  }
+  // if (error) {
+  //   setLoading(false);
+  //   return (errorMessage = (
+  //     <p className="text-red-500 text-center">{error.message}</p>
+  //   ));
+  // }
+
   return (
-    <div className="flex justify-center items-center h-screen ">
+    <div className="flex justify-center items-center h-screen pt-20 ">
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body text-center space-y-8 border border-primary px-20">
           <h2 className="text-2xl font-bold text-primary">Login</h2>
@@ -108,6 +161,7 @@ const Login = () => {
               type="submit"
               value="Login"
             />
+
             <div className=" mt-2">
               <span className="text-red-500 mr-2"> New ? </span>
               <Link to="/register" className="text-green-500 font-bold">
