@@ -3,17 +3,18 @@ const Schema = mongoose.Schema;
 
 const bookingSchema = new Schema({
   treatmentId: {
-    type: String,
-    required: true,
+    type: Number,
   },
   treatmentType: {
     type: String,
     required: true,
+    trim: true,
   },
   date: {
     type: Date,
     required: true,
     default: Date.now(),
+    trim: true,
   },
   slot: {
     type: String,
@@ -22,10 +23,12 @@ const bookingSchema = new Schema({
   patientEmail: {
     type: String,
     required: true,
+    trim: true,
   },
   patientName: {
     type: String,
     required: true,
+    trim: true,
   },
   phoneNumber: {
     type: Number,

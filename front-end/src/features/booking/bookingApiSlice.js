@@ -1,4 +1,4 @@
-import { apiSlice } from "../services/apiSlice";
+import { apiSlice } from "../api/apiSlice";
 
 export const bookingApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,11 +8,11 @@ export const bookingApi = apiSlice.injectEndpoints({
     getBooking: builder.query({
       query: (id) => `/booking/${id}`,
     }),
-    addtBooking: builder.mutation({
-      query: () => ({
-        url: "/booking/",
+    addBooking: builder.mutation({
+      query: (data) => ({
+        url: "/booking",
         method: "POST",
-        body,
+        body: data,
       }),
     }),
     updateBooking: builder.mutation({
@@ -34,7 +34,7 @@ export const bookingApi = apiSlice.injectEndpoints({
 export const {
   useGetBookingQuery,
   useGetBookingsQuery,
-  useAddServiceMutation,
+  useAddBookingMutation,
   useUpdateBookingMutation,
   useDeleteBookingMutation,
 } = bookingApi;

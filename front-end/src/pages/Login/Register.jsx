@@ -154,9 +154,7 @@ const Register = () => {
               </Link>
             </div>
             {error && <p className="text-red-500">{error.message}</p>}
-            <div>
-              <ToastContainer />
-            </div>
+            <div></div>
           </form>
         </div>
       </div>

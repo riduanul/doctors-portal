@@ -9,6 +9,8 @@ import Appointment from "./pages/Appointment/Appointment.jsx";
 import Register from "./pages/Login/Register";
 import { useSelector } from "react-redux";
 import RequireAuth from "./pages/Login/RequireAuth";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const email = useSelector((state) => state.user.email);
   return (
@@ -31,6 +33,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
+          <ToastContainer />
         </div>
       </BrowserRouter>
     </div>

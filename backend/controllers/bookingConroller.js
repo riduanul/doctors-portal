@@ -33,11 +33,28 @@ const getBooking = async (req, res) => {
 
 // Create a New Booking
 const createBooking = async (req, res) => {
-  const { booking } = req.body;
+  const { bookingData } = req.body;
 
-  // add booking to database
+  const {
+    treatmentId,
+    treatmentType,
+    date,
+    slot,
+    patientEmail,
+    patientName,
+    phoneNumber,
+  } = bookingData;
+
   try {
-    const booking = await Booking.create({ booking });
+    const booking = await Booking.create({
+      treatmentId,
+      treatmentType,
+      date,
+      slot,
+      patientEmail,
+      patientName,
+      phoneNumber,
+    });
     res.status(200).json({
       booking,
     });

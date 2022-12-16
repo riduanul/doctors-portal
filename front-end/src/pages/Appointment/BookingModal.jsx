@@ -1,16 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import { useAddBookingMutation } from "../../features/booking/bookingApiSlice";
 const BookingModal = ({ treatment, date, format, setTreatment }) => {
-  const { _id, name, slots } = treatment;
+  const { id, name, slots } = treatment;
   const { email, userName } = useSelector((state) => state.user);
+  const [addBooking, { isSuccess, isError, error }] = useAddBookingMutation();
+
   const handleBooking = (event) => {
     event.preventDefault();
     const slot = event.target.slot.value;
     const formatedDate = format(date, "PP");
-    console.log(_id, name, slot);
-    const booking = {
-      treatmenId: _id,
+    const bookingData = {
+      treatmentId: id,
       treatmentType: name,
       date: formatedDate,
       slot,
@@ -18,6 +19,15 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
       patientName: userName,
       phoneNumber: event.target.phone.value,
     };
+
+    if (!isError) {
+      addBooking({
+        bookingData,
+      });
+    } else {
+      console.log(`Error from bm: ${JSON.stringify(error.data)}`);
+    }
+
     setTreatment(null);
   };
   return (
