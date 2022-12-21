@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useAddBookingMutation } from "../../features/booking/bookingApiSlice";
+import { toast } from "react-toastify";
+
 const BookingModal = ({ treatment, date, format, setTreatment }) => {
   const { id, name, slots } = treatment;
   const { email, userName } = useSelector((state) => state.user);
@@ -20,16 +22,26 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
       phoneNumber: event.target.phone.value,
     };
 
-    if (!isError) {
-      addBooking({
-        bookingData,
+    addBooking({ bookingData })
+      .unwrap()
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(`Appointment Is set, ${formatedDate} at ${slot}`, {
+            position: "bottom-left",
+          });
+        } else {
+          toast.error(
+            `You already have an appointment, ${formatedDate} at ${slot}`,
+            {
+              position: "bottom-left",
+            }
+          );
+        }
       });
-    } else {
-      console.log(`Error from bm: ${JSON.stringify(error.data)}`);
-    }
-
     setTreatment(null);
   };
+
   return (
     <div>
       <input type="checkbox" id="booking-modal" className="modal-toggle" />

@@ -45,7 +45,21 @@ const createBooking = async (req, res) => {
     phoneNumber,
   } = bookingData;
 
+  const query = {
+    treatmentType: treatmentType,
+    date: date,
+    patientEmail: patientEmail,
+  };
   try {
+    const exist = await Booking.findOne(query);
+    if (exist) {
+      return res.status(208).json({
+        success: false,
+        message: `${patientName} has alrady an appointment on ${exist.date} at ${exist.slot}`,
+        booking: exist,
+      });
+    }
+
     const booking = await Booking.create({
       treatmentId,
       treatmentType,
@@ -56,6 +70,7 @@ const createBooking = async (req, res) => {
       phoneNumber,
     });
     res.status(200).json({
+      success: true,
       booking,
     });
   } catch (err) {

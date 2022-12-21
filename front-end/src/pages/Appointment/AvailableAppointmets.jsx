@@ -1,16 +1,37 @@
 import React, { useState, useEffect } from "react";
 import AppointmentService from "./AppointmentService";
 import BookingModal from "./BookingModal";
+import {
+  useGetServicesQuery,
+  useGetAvailableServicesQuery,
+} from "../../features/services/apiSlice";
+import Loading from "../Shared/Loading";
 
 const AvailableAppointmets = ({ date, format }) => {
-  const [services, setServices] = useState([]);
   const [treatment, setTreatment] = useState(null);
+  const formatedDate = format(date, "PP");
+  const { data, isLoading, error } = useGetAvailableServicesQuery(formatedDate);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/services")
-      .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []);
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <p className="text-red-500 text-center"> There was an error occured!</p>
+    );
+  }
+  if (!isLoading && !error && data.services === 0) {
+    return <p>There is no Service available!</p>;
+  }
+  if (!isLoading && !error && data.services > 0) {
+    console.log(data.services);
+  }
+  console.log(data);
+
   return (
     <section className="pt-5">
       <div>
@@ -18,8 +39,8 @@ const AvailableAppointmets = ({ date, format }) => {
           Available Appointments on {format(date, "PP")}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.services &&
-            services.services.map((service) => (
+          {data.services &&
+            data.services.map((service) => (
               <AppointmentService
                 key={service._id}
                 service={service}

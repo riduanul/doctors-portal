@@ -1,9 +1,15 @@
 import { apiSlice } from "../api/apiSlice";
 
+const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ["booked"] });
+
 export const servicesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getServices: builder.query({
       query: () => "/services/",
+    }),
+    getAvailableServices: builder.query({
+      query: (date) => `/services/available?date=${date}`,
+      providesTags: ["booked"],
     }),
     getService: builder.query({
       query: (id) => `/services/${id}`,
@@ -33,6 +39,7 @@ export const servicesApi = apiSlice.injectEndpoints({
 
 export const {
   useGetServiceQuery,
+  useGetAvailableServicesQuery,
   useGetServicesQuery,
   useAddServiceMutation,
   useDeleteServiceMutation,

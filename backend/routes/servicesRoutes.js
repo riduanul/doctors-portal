@@ -5,12 +5,15 @@ const {
   getService,
   deleteService,
   updateService,
+  getAvailableServices,
 } = require("../controllers/ServicesController");
 
 const router = express.Router();
 
 // Get all Services
 router.get("/", getServices);
+// Get Available services
+router.get("/available", getAvailableServices);
 
 // Get a single service
 router.get("/:id", getService);

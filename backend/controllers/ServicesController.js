@@ -1,6 +1,6 @@
 const Services = require("../models/servicesModel");
 const mongoose = require("mongoose");
-
+const Booking = require("../models/bookingModel");
 // get All Services
 const getServices = async (req, res) => {
   const services = await Services.find({});
@@ -8,6 +8,7 @@ const getServices = async (req, res) => {
     services,
   });
 };
+
 // Get a single Service
 const getService = async (req, res) => {
   const { id } = req.params;
@@ -40,6 +41,30 @@ const createService = async (req, res) => {
       error: err.message,
     });
   }
+};
+// Get remaining data after booking
+const getAvailableServices = async (req, res) => {
+  const date = req.query.date;
+  const services = await Services.find();
+
+  const query = { date: date };
+  //get the booking of that day
+  const bookings = await Booking.find(query);
+
+  //find the bookings for that service
+  services.forEach((service) => {
+    const serviceBookings = bookings.filter(
+      (book) => book.treatmentType === service.name
+    );
+    const bookedSlots = serviceBookings.map((book) => book.slot);
+    const availableSlots = service.slots.filter(
+      (slot) => !bookedSlots.includes(slot)
+    );
+    service.slots = availableSlots;
+  });
+  res.status(200).json({
+    services,
+  });
 };
 // delete a service
 const deleteService = async (req, res) => {
@@ -91,4 +116,5 @@ module.exports = {
   getService,
   deleteService,
   updateService,
+  getAvailableServices,
 };
