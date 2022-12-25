@@ -2,7 +2,7 @@ import { apiSlice } from "../api/apiSlice";
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ["booked"] });
 
-export const servicesApi = apiSlice.injectEndpoints({
+export const servicesApi = apiWithTag.injectEndpoints({
   endpoints: (builder) => ({
     getServices: builder.query({
       query: () => "/services/",

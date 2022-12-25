@@ -6,7 +6,7 @@ export const bookingApi = apiSlice.injectEndpoints({
       query: () => "/booking/",
     }),
     getBooking: builder.query({
-      query: (id) => `/booking/${id}`,
+      query: (email) => `/booking?patientEmail=${email}`,
     }),
     addBooking: builder.mutation({
       query: (data) => ({
@@ -18,7 +18,7 @@ export const bookingApi = apiSlice.injectEndpoints({
     updateBooking: builder.mutation({
       query: ({ id, data }) => ({
         url: `/booking/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
     }),

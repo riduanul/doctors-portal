@@ -75,16 +75,10 @@ const Login = () => {
       .catch((err) => setError(err));
     navigate("/");
   };
-  let errorMessage;
+
   if (loading) {
     return <Loading />;
   }
-  // if (error) {
-  //   setLoading(false);
-  //   return (errorMessage = (
-  //     <p className="text-red-500 text-center">{error.message}</p>
-  //   ));
-  // }
 
   return (
     <div className="flex justify-center items-center h-screen pt-20 ">
@@ -123,7 +117,6 @@ const Login = () => {
                 </span>
               </label>
             </div>
-
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Password</span>
@@ -133,7 +126,7 @@ const Login = () => {
                 placeholder="Password"
                 className="input input-bordered w-full max-w-xs"
                 {...register("password", {
-                  required: { value: true, message: "password is required!" },
+                  required: { value: true, message: "Password is required!" },
                   minLength: {
                     value: 6,
                     message: "must be 6 characters  or long",
@@ -155,19 +148,18 @@ const Login = () => {
                 </span>
               </label>
             </div>
-
             <input
               className="btn btn-outline border border-primary  w-full max-w-xs hover:bg-primary hover:border-none"
               type="submit"
               value="Login"
             />
-
             <div className=" mt-2">
               <span className="text-red-500 mr-2"> New ? </span>
               <Link to="/register" className="text-green-500 font-bold">
                 Register
               </Link>
             </div>
+
             {error && (
               <p className="text-red-500 text-center">{error.message}</p>
             )}

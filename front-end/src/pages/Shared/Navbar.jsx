@@ -25,18 +25,22 @@ const Navbar = () => {
         <Link to="/">Home</Link>
       </li>
       <li className="hover:bg-secondary hover:rounded">
-        <Link to="/appointment">Appointment</Link>
+        <Link to="appointment">Appointment</Link>
       </li>
       <li className="hover:bg-secondary hover:rounded">
-        <Link to="/review">Review</Link>
+        <Link to="review">Review</Link>
       </li>
       <li className="hover:bg-secondary hover:rounded">
-        <Link to="/contact">Contact</Link>
+        <Link to="contact">Contact</Link>
       </li>
       <li className="hover:bg-secondary hover:rounded">
-        <Link to="/about">About</Link>
+        <Link to="about">About</Link>
       </li>
-
+      {email && (
+        <li className="hover:bg-secondary hover:rounded">
+          <Link to="dashboard">Dashboard</Link>
+        </li>
+      )}
       <li
         className=" hover:bg-secondary hover:rounded tooltip tooltip-open tooltip-bottom tooltip-info"
         data-tip={userName ? `${userName} ` : "user"}
@@ -51,7 +55,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 max-w-full fixed top-0 left-0 justify-center border-b border-b-slate-200 z-10 ">
+    <div className="navbar bg-base-100 max-w-full fixed top-0 left-0 justify-center shadow-sm z-10 ">
       <div className="navbar-start ">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -88,7 +92,31 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal p-0">{menuItems}</ul>
+        <ul className="menu menu-horizontal p-0 " tabIndex="1">
+          {menuItems}
+        </ul>
+      </div>
+      <div className="navbar-end lg:hidden">
+        <label
+          htmlFor="my-drawer-2"
+          tabIndex="1"
+          className="drawer-overlay btn btn-ghost"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h8m-8 6h16"
+            />
+          </svg>
+        </label>
       </div>
     </div>
   );

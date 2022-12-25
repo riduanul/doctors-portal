@@ -11,6 +11,11 @@ import { useSelector } from "react-redux";
 import RequireAuth from "./pages/Login/RequireAuth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import MyAppointments from "./pages/Dashboard/MyAppointments";
+import Reviews from "./pages/Dashboard/Reviews";
+import TreatmentHistory from "./pages/Dashboard/TreatmentHistory.jsx";
+
 function App() {
   const email = useSelector((state) => state.user.email);
   return (
@@ -20,17 +25,29 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
+            <Route path="about" element={<About />} />
             <Route
-              path="/appointment"
+              path="appointment"
               element={
                 <RequireAuth>
                   <Appointment />
                 </RequireAuth>
               }
             />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="dashboard"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            >
+              <Route index element={<MyAppointments />} />
+              <Route path="reviews" element={<Reviews />} />
+              <Route path="history" element={<TreatmentHistory />} />
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
           </Routes>
           <Footer />
           <ToastContainer />

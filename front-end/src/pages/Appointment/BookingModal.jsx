@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useAddBookingMutation } from "../../features/booking/bookingApiSlice";
 import { toast } from "react-toastify";
 
-const BookingModal = ({ treatment, date, format, setTreatment }) => {
+const BookingModal = ({ treatment, date, format, setTreatment, refetch }) => {
   const { id, name, slots } = treatment;
   const { email, userName } = useSelector((state) => state.user);
   const [addBooking, { isSuccess, isError, error }] = useAddBookingMutation();
@@ -39,6 +39,7 @@ const BookingModal = ({ treatment, date, format, setTreatment }) => {
           );
         }
       });
+    refetch();
     setTreatment(null);
   };
 

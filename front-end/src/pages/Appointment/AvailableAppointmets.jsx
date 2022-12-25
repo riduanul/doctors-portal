@@ -10,7 +10,8 @@ import Loading from "../Shared/Loading";
 const AvailableAppointmets = ({ date, format }) => {
   const [treatment, setTreatment] = useState(null);
   const formatedDate = format(date, "PP");
-  const { data, isLoading, error } = useGetAvailableServicesQuery(formatedDate);
+  const { data, isLoading, error, refetch } =
+    useGetAvailableServicesQuery(formatedDate);
 
   if (isLoading) {
     return (
@@ -30,7 +31,6 @@ const AvailableAppointmets = ({ date, format }) => {
   if (!isLoading && !error && data.services > 0) {
     console.log(data.services);
   }
-  console.log(data);
 
   return (
     <section className="pt-5">
@@ -53,6 +53,7 @@ const AvailableAppointmets = ({ date, format }) => {
             treatment={treatment}
             date={date}
             format={format}
+            refetch={refetch}
             setTreatment={setTreatment}
           />
         )}

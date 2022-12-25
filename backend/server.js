@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const servicesRoutes = require("./routes/servicesRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const usersRoute = require("./routes/usersRoute");
 const database = require("./database");
 const cors = require("cors");
 //express app
@@ -17,6 +18,7 @@ app.use(express.json());
 // routes
 app.use("/api/services", servicesRoutes);
 app.use("/api/booking", bookingRoutes);
+app.use("/api/user", usersRoute);
 
 //404 error handler
 app.use((req, res, next) => {
