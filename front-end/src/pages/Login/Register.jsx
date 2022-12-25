@@ -5,10 +5,12 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useToken from "../../Hooks/useToken";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [token] = useToken(user);
   const navigate = useNavigate();
   const {
     register,
@@ -148,7 +150,7 @@ const Register = () => {
               type="submit"
             />
             <div className=" mt-2">
-              <span className="text-red-500 mr-2"> Already Registerd ? </span>
+              <span className="text-red-500 mr-2"> Already Registered ? </span>
               <Link to="/login" className="text-green-500 font-bold">
                 Login
               </Link>
