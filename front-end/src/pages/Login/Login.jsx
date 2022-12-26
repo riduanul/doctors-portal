@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import googleIcon from "../../../assets/icons/google.png";
 import { useForm } from "react-hook-form";
 import { Link, useLocation } from "react-router-dom";
@@ -10,20 +10,22 @@ import {
 import { auth } from "../../firebase.config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setActiveUser,
-  setUserLogOutState,
-} from "../../features/services/userSlice";
+import { setActiveUser } from "../../features/services/userSlice";
 import Loading from "../shared/Loading.jsx";
+import useToken from "../../Hooks/useToken";
+import { useUpdateUserMutation } from "../../features/user/userApi";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const userName = useSelector((state) => state.user.userName);
-  const email = useSelector((state) => state.user.email);
+  const [updateUser, { data, isLoading, isError }] = useUpdateUserMutation();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const location = useLocation();
+  const [user, setUser] = useState({});
+  const [token] = useToken(user);
+
   const navigate = useNavigate();
+
   let from = location.state?.from?.pathname || "/";
   const {
     register,
@@ -63,21 +65,24 @@ const Login = () => {
   const provider = new GoogleAuthProvider();
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) =>
+      .then((result) => {
         dispatch(
           setActiveUser({
             userName: result.user.displayName,
             email: result.user.email,
           })
-        )
-      )
+        );
+        setUser(result.user);
+      })
 
       .catch((err) => setError(err));
-    navigate("/");
   };
 
   if (loading) {
     return <Loading />;
+  }
+  if (token) {
+    navigate("/appointment");
   }
 
   return (

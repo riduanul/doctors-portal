@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  getBooking,
   getBookings,
   createBooking,
   updateBooking,
@@ -12,7 +13,7 @@ const router = express.Router();
 router.get("/", getBookings);
 
 // Get a Booking
-// router.get("/", getBooking);
+router.get("/", getBooking);
 
 // Get a PersonsBooking
 router.get("/", getPersonsBooking);
@@ -24,6 +25,6 @@ router.post("/", createBooking);
 router.delete("/", deleteBooking);
 
 // Upadate a Booking
-router.patch("/", updateBooking);
+router.put("/", updateBooking);
 
 module.exports = router;

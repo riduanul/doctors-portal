@@ -9,17 +9,40 @@ const getBookings = async (req, res) => {
   });
 };
 
+//Get A single Booking
+
+const getBooking = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).json({
+      error: "Invalid Id",
+    });
+  }
+
+  const booking = await Booking.findById(id);
+  if (!booking) {
+    res.status(500).json({
+      error: "No such a booking Found!",
+    });
+  } else {
+    res.status(200).json({
+      booking,
+    });
+  }
+};
+
 // Get A Single Person's Booking
 const getPersonsBooking = async (req, res) => {
   const email = req.query.email;
-  const bookings = await Booking.find({ patientEmail: email });
-  if (bookings) {
-    res.status(200).json({
-      bookings,
-    });
-  } else {
+  const query = { patientEmail: email };
+  const booking = await Booking.find(query);
+  if (!booking) {
     res.status(500).json({
       error: "No such a booking Found!",
+    });
+  } else {
+    res.status(200).json({
+      booking,
     });
   }
 };
@@ -123,6 +146,7 @@ const updateBooking = async (req, res) => {
 };
 
 module.exports = {
+  getBooking,
   getBookings,
   getPersonsBooking,
   createBooking,

@@ -5,12 +5,13 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useToken from "../../Hooks/useToken";
+import { useDispatch, useSelector } from "react-redux";
+import { useSignupMutation } from "../../features/user/userApi";
 
 const Register = () => {
+  const [signup, { data, isLoading, isError }] = useSignupMutation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [token] = useToken(user);
   const navigate = useNavigate();
   const {
     register,
@@ -18,9 +19,9 @@ const Register = () => {
     reset,
     formState: { errors },
   } = useForm();
-
-  const signup = async (data) => {
-    const { email, password } = data;
+  const dispatch = useDispatch();
+  const handleSignup = async (data) => {
+    const { name: username, email, password } = data;
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -36,11 +37,16 @@ const Register = () => {
         })
         .catch((err) => console.log(err));
       const user = userCredential.user;
+
+      signup({ username, email, password });
+
       setLoading(false);
+      setError(false);
       reset();
-      toast.success("Successfully Registerd!", {
+      toast.success("Successfully Registered!", {
         position: toast.POSITION.BOTTOM_LEFT,
       });
+      navigate("/appointment");
     } catch (error) {
       setError(error);
     }
@@ -51,7 +57,7 @@ const Register = () => {
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body text-center space-y-8 border border-primary px-20">
           <h2 className="text-2xl font-bold text-primary">Register</h2>
-          <form onSubmit={handleSubmit(signup)} className="w-full">
+          <form onSubmit={handleSubmit(handleSignup)} className="w-full">
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">User Name</span>

@@ -1,10 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useUpdateUserMutation } from "../features/user/userApi";
 
 const useToken = (user) => {
   const [token, setToken] = useState("");
-  useEffect(() => {
-    console.log(`user from use token: ${user}`);
-  }, [user]);
+  const [updateUser, { data, isLoading }] = useUpdateUserMutation();
+  useEffect(
+    (user) => {
+      const username = user?.displayName;
+      const email = user?.email;
+      const currentUser = { username, email };
+      if (user) {
+        updateUser({ email, currrentUser });
+      }
+    },
+    [user]
+  );
+  setToken(user);
   return [token];
 };
 
